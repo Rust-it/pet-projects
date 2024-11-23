@@ -30,8 +30,12 @@ print(f"Привет {name}")
 while True:
     question = input("Задайте вопрос: ")
     print(choice(answers))
-    if input("Задать другой вопрос - да, любой ввод - нет: ") == "да":
+    continue_question = input("Задать другой вопрос? (да/нет): ").strip().lower()
+    if continue_question in ["да", "yes", "y"]:
         continue
-    else:
+    elif continue_question in ["нет", "no", "n"]:
         print("Возвращайся если возникнут вопросы!")
+        break
+    else:
+        print("Неизвестный ответ. Прощай!")
         break
