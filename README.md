@@ -4,4 +4,5 @@
 - Library_Manager
 
 ### Projects based on tutorials + my additional implementations:
+- Guess_the_number
 - Hangman
