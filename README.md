@@ -1,7 +1,7 @@
-# My pet-projects.
+## My pet-projects.
 
-## Projects I did:
+### Projects I did:
 - Library_Manager
 
-## Projects based on tutorials + my additional implementations:
+### Projects based on tutorials + my additional implementations:
 - Hangman
