@@ -21,7 +21,7 @@
 2. Запустите игру из командной строки:
 
     ```bash
-    python Hangman.py
+    python hangman.py
     ```
 
 ## Как это работает
