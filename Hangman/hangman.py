@@ -1,163 +1,151 @@
-from random import *
+import random
 
 word_list = [
-    "человек",
-    "слово",
-    "лицо",
-    "дверь",
-    "земля",
-    "работа",
-    "ребенок",
-    "история",
-    "женщина",
-    "развитие",
-    "власть",
-    "правительство",
-    "начальник",
-    "спектакль",
-    "автомобиль",
-    "экономика",
-    "литература",
-    "граница",
-    "магазин",
-    "председатель",
-    "сотрудник",
-    "республика",
-    "личность",
+    "человек", "слово", "лицо", "дверь", "земля", "работа", "ребенок",
+    "история", "женщина", "развитие", "власть", "правительство", "начальник",
+    "спектакль", "автомобиль", "экономика", "литература", "граница", "магазин",
+    "председатель", "сотрудник", "республика", "личность"
 ]
 
 def get_word():
-    word = choice(word_list)
-    return word.upper()
+    """Возвращает случайное слово из списка, преобразованное в верхний регистр."""
+    return random.choice(word_list).upper()
 
 def display_hangman(tries):
-    stages = [  # финальное состояние: голова, торс, обе руки, обе ноги
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |     \\|/
-                   |      |
-                   |     / \\
-                   -
-                ''',
-                # голова, торс, обе руки, одна нога
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |     \\|/
-                   |      |
-                   |     / 
-                   -
-                ''',
-                # голова, торс, обе руки
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |     \\|/
-                   |      |
-                   |      
-                   -
-                ''',
-                # голова, торс и одна рука
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |     \\|
-                   |      |
-                   |     
-                   -
-                ''',
-                # голова и торс
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |      |
-                   |      |
-                   |     
-                   -
-                ''',
-                # голова
-                '''
-                   --------
-                   |      |
-                   |      O
-                   |    
-                   |      
-                   |     
-                   -
-                ''',
-                # начальное состояние
-                '''
-                   --------
-                   |      |
-                   |      
-                   |    
-                   |      
-                   |     
-                   -
-                '''
+    """Возвращает изображение виселицы в зависимости от количества оставшихся попыток."""
+    stages = [
+        ''' 
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / \\
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / 
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |      
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|
+           |      |
+           |     
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |      |
+           |      |
+           |     
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |    
+           |      
+           |     
+           - 
+        ''',
+        '''
+           --------
+           |      |
+           |      
+           |    
+           |      
+           |     
+           - 
+        '''
     ]
     return stages[tries]
 
 def play(word):
-    tries = 6                          # количество попыток
-    word_completion = '_' * len(word)  # строка, содержащая символы _ на каждую букву задуманного слова
-    guessed = False                    # сигнальная метка
-    guessed_letters = []               # список уже названных букв
-    guessed_words = []                 # список уже названных слов
+    """Основная логика игры."""
+    tries = 6
+    word_completion = ['_'] * len(word)
+    guessed_letters = set()
+    guessed_words = set()
 
     print('Давайте играть в угадайку слов!')
     print(display_hangman(tries))
-    print(word_completion)
+    print(' '.join(word_completion))
     print()
 
-    while not guessed and tries > 0:
+    while tries > 0:
         guess = input('Введите букву или слово целиком: ').upper()
-        if len(guess) == 1 and guess.isalpha():
+
+        if len(guess) == 1 and guess.isalpha():  # Проверка на букву
             if guess in guessed_letters:
-                print('Вы уже называли букву', guess)
+                print(f'Вы уже называли букву "{guess}".')
             elif guess not in word:
-                print('Буквы', guess, 'нет в слове.')
+                print(f'Буквы "{guess}" нет в слове.')
                 tries -= 1
-                guessed_letters.append(guess)
+                guessed_letters.add(guess)
             else:
-                print('Отличная работа, буква', guess, 'присутствует в слове!')
-                guessed_letters.append(guess)
-                word_as_list = list(word_completion)
-                indices = [i for i in range(len(word)) if word[i] == guess]
-                for index in indices:
-                    word_as_list[index] = guess
-                word_completion = ''.join(word_as_list)
+                print(f'Отлично, буква "{guess}" есть в слове!')
+                guessed_letters.add(guess)
+                word_completion = [
+                    guess if word[i] == guess else word_completion[i]
+                    for i in range(len(word))
+                ]
                 if '_' not in word_completion:
-                    guessed = True
-        elif len(guess) == len(word) and guess.isalpha():
+                    print('Поздравляем, вы угадали слово! Вы победили!')
+                    break
+        elif len(guess) == len(word) and guess.isalpha():  # Проверка на слово
             if guess in guessed_words:
-                print('Вы уже называли слово', guess)
+                print(f'Вы уже называли слово "{guess}".')
             elif guess != word:
-                print('Слово', guess, 'не является верным.')
+                print(f'Слово "{guess}" неверное.')
                 tries -= 1
-                guessed_words.append(guess)
+                guessed_words.add(guess)
             else:
-                guessed = True
-                word_completion = word
+                print('Поздравляем, вы угадали слово! Вы победили!')
+                break
         else:
-            print('Введите букву или слово.')
+            print('Введите одну букву или целое слово.')
+        
         print(display_hangman(tries))
-        print(word_completion)
+        print(' '.join(word_completion))
         print()
-    if guessed:
-        print('Поздравляем, вы угадали слово! Вы победили!')
-    else:
-        print('Вы не угадали слово. Загаданным словом было ' + word + '. Может быть в следующий раз!')
 
-again = 'д'
+    if tries == 0:
+        print(f'Вы не угадали слово. Загаданным словом было "{word}".')
 
-while again.lower() == 'д':
-    word = get_word()
-    play(word)
-    again = input('Играем еще раз? (д = да, н = нет): ')
+def main():
+    """Основная функция для повторных игр."""
+    while True:
+        word = get_word()
+        play(word)
+        again = input('Играем еще раз? (да или нет): ').lower()
+
+        # Проверяем правильный ввод (только "да" или "нет")
+        while again not in ['да', 'нет']:
+            again = input('Пожалуйста, введите "да" или "нет": ').lower()
+
+        if again == 'нет':
+            print('Спасибо за игру! До свидания!')
+            break
+
+if __name__ == '__main__':
+    main()
