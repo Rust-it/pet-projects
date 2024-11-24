@@ -7,3 +7,4 @@
 - Guess_the_number
 - Hangman
 - Magic_Ball_8
+- Password_Generator
