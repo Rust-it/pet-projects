@@ -1,9 +1,9 @@
-## My pet-projects.
+# Мои пет-проекты.
 
-### Projects I did:
+## Пет-проекты для трудоустройства (тестовые задания):
 - Library_Manager
 
-### Projects based on tutorials + my additional implementations:
+## Учебные пет-проекты + мои дополнения:
 - Guess_the_number
 - Hangman
 - Magic_Ball_8
